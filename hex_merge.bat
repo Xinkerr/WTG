@@ -2,6 +2,7 @@
 
 md Output
 
+del Output/*
 
 copy simple_peripheral_cc2640r2lp_oad_offchip_app\FlashROM\simple_peripheral_cc2640r2lp_oad_offchip_app_FlashROM_oad.bin Output\application_oad.bin
 

@@ -249,6 +249,7 @@
 #define APP_SIGFOX_MSG_TEST                   0x000C  /*sigfox send msg for test*/
 #define APP_MULTIPLE_BUTTON                   0x000D  /*single button multi-function*/
 #define APP_10MIN_TIMER                       0x000E
+#define APP_ADV_UPDATE                        0x000F
 
 #define SBP_OAD_QUEUE_EVT                     OAD_QUEUE_EVT       // Event_Id_01
 #define SBP_OAD_COMPLETE_EVT                  OAD_DL_COMPLETE_EVT // Event_Id_02
@@ -680,12 +681,17 @@ void advertising_data_update(void)
 {
     uint32_t batteryLevel = adcValueMicroVolt / 1000;
     uint16_t tmp_battery = (uint16_t)batteryLevel;
+    int32_t length = (int32_t)(tank_level.line_length * SEGMENT_LENGTH / 10);
 
-    memcpy(&advertData[11], &tank_level.line_length, 4);
+    memcpy(&advertData[11], &length, 4);
     memcpy(&advertData[15], &tmp_battery, 2);
     GAPRole_SetParameter(GAPROLE_ADVERT_DATA, sizeof(advertData), advertData);
 }
 
+static void app_adv_update_sched(void)
+{
+    app_enqueueMsg(APP_ADV_UPDATE, NULL, NULL);
+}
 /*********************************************************************
  * @fn      app_createTask
  *
@@ -1189,7 +1195,7 @@ static void app_init(void)
   app_calibrate_led();
   #endif
 
-  advertising_data_update();
+  app_adv_update_sched();
 }
 
 /*********************************************************************
@@ -1769,6 +1775,10 @@ static void app_processAppMsg(sbpEvt_t *pMsg)
 
     case APP_10MIN_TIMER:
       app_getBatteryLevel();
+      advertising_data_update();
+      break;
+
+    case APP_ADV_UPDATE:
       advertising_data_update();
       break;
 
@@ -2450,7 +2460,7 @@ static void app_setTankLevel(void)
 {
   int32_t length = (int32_t)(tank_level.line_length * SEGMENT_LENGTH / 10); //SEGMENT_LENGTH/10 mm
   TankMeterService_SetParameter(TMS_TANK_LEVEL_ID, TMS_TANK_LEVEL_LEN, &length);  
-  advertising_data_update();
+  app_adv_update_sched();
 }
 
 static void app_getBatteryLevel(void)
