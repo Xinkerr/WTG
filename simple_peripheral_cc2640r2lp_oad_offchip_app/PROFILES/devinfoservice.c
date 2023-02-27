@@ -154,7 +154,7 @@ static uint8 devInfoSerialNumber[DEVINFO_SERIAL_NUMBER_LEN] = {0, 0, 0, 0, 0, 0}
 
 // Firmware Revision String characteristic
 static uint8 devInfoFirmwareRevProps = GATT_PROP_READ;
-static uint8 devInfoFirmwareRev[DEVINFO_STR_ATTR_LEN+1] = "1.0.5";
+static uint8 devInfoFirmwareRev[DEVINFO_STR_ATTR_LEN+1] = "1.0.4";
 
 // Hardware Revision String characteristic
 static uint8 devInfoHardwareRevProps = GATT_PROP_READ;
@@ -162,7 +162,7 @@ static uint8 devInfoHardwareRev[DEVINFO_STR_ATTR_LEN+1] = "WTG";
 
 // Software Revision String characteristic
 static uint8 devInfoSoftwareRevProps = GATT_PROP_READ;
-static uint8 devInfoSoftwareRev[DEVINFO_STR_ATTR_LEN+1] = "1.0.5";
+static uint8 devInfoSoftwareRev[DEVINFO_STR_ATTR_LEN+1] = "1.0.4";
 
 // Manufacturer Name String characteristic
 static uint8 devInfoMfrNameProps = GATT_PROP_READ;
